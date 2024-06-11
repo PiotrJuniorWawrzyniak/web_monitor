@@ -1,0 +1,28 @@
+# Python
+*.pyc
+__pycache__/
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+
+# Environments
+.env
+venv/
+ENV/
+env/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
