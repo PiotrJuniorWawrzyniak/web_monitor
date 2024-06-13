@@ -11,3 +11,7 @@ class MonitoredSite(models.Model):
 
     def __str__(self):
         return self.url
+
+    class Meta:
+        verbose_name = "Monitored Page"
+        verbose_name_plural = "Monitored Pages"
