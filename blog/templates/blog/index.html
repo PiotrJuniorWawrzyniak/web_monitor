@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitored Pages</title>
+</head>
+<body>
+    <h1>Monitored Pages</h1>
+    <ul>
+        {% for site in sites %}
+            <li>{{ site.url }} - Check every {{ site.check_interval }} minutes</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
