@@ -52,7 +52,8 @@ class MonitoredSite(models.Model):
     # name = models.CharField(max_length=100)
     url = models.URLField()
     check_interval = models.IntegerField()
-    keyword = models.CharField(max_length=100, default='default_keyword')
+    keyword = models.CharField(max_length=100)
+    # keyword = models.CharField(max_length=100, default='default_keyword')
 
     def __str__(self):
         return self.name
