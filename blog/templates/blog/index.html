@@ -1,13 +1,37 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>WEB MONITOR</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Monitored Pages</h1>-->
+<!--    <ul>-->
+<!--        {% for site in sites %}-->
+<!--            <li>{{ site.url }} - Check every {{ site.check_interval }} minutes</li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
+    <meta charset="UTF-8">
     <title>WEB MONITOR</title>
 </head>
 <body>
-    <h1>Monitored Pages</h1>
+    <h1>Monitorowane strony</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Site</button>
+    </form>
     <ul>
         {% for site in sites %}
-            <li>{{ site.url }} - Check every {{ site.check_interval }} minutes</li>
+        <li>
+            <a href="{% url 'site_detail' site.id %}">{{ site.url }}</a>
+            (Check every {{ site.check_interval }} minutes)
+        </li>
         {% endfor %}
     </ul>
 </body>
