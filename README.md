@@ -1,7 +1,12 @@
-# Web Monitor
+# Web Monitor (Web Monitoring Application)
+
+An application for monitoring changes on selected websites.
 
 ## Description
-The Web Monitor application tracks a list of web pages provided in a CSV file, along with their refresh frequency and a search phrase. If a page has changed since the last check, the application displays a notification and sends an email alert. If the specified phrase is found on the page (and was not previously present), an additional notification is sent. The application also sends a daily report of registered changes.
+- **Add websites to monitor:** Add new websites to be monitored for changes directly from the main page of the application.
+- **Edit websites:** Edit the name of the monitored website, the phrase to track, and the frequency of checks.
+- **Delete websites:** Remove selected monitored websites.
+- **Track changes:** The application checks selected websites at specified intervals and records changes.
 
 This project is built using Django and Celery Beat.
 
@@ -9,13 +14,12 @@ This project is built using Django and Celery Beat.
 - Python 3.x
 - Django
 - Celery
-- Redis or RabbitMQ (for Celery broker)
-- SMTP server (for sending emails)
+- Redis (for Celery broker)
 
 ## Installation
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/web-monitor.git
+    git clone <repository_url>
     cd web-monitor
     ```
 
@@ -45,8 +49,13 @@ This project is built using Django and Celery Beat.
     python manage.py runserver
     ```
 
-7. Configure Celery:
-    - Ensure Redis or RabbitMQ is running.
+7. Start the Redis server:
+    ```sh
+    redis-server
+    ```
+
+8. Configure Celery:
+    - Ensure Redis or is running.
     - Start the Celery worker:
         ```sh
         celery -A web_monitor worker --loglevel=info
@@ -57,10 +66,18 @@ This project is built using Django and Celery Beat.
         ```
 
 ## Usage
-1. Upload the CSV file containing the list of URLs, refresh frequency, and search phrases.
-2. The application will periodically check the specified web pages.
-3. Notifications will be sent via email if changes are detected or if the search phrase is found.
-4. A daily report of all changes will be emailed once a day.
+1. **Add a website to monitor:**
+   - Fill out the form on the main page of the application to add a new website.
+
+2. **Edit a website:**
+   - Click on the name of the monitored website to go to the edit page.
+   - Enter new data (name, phrase to track, check frequency) and save changes.
+
+3. **Delete a website:**
+   - Click the delete button on the edit page to remove the website.
+
+4. **Track changes:**
+   - The application automatically checks the websites at specified intervals. Changes are recorded and displayed in the application.
 
 ## Author
 - Piotr Wawrzyniak - [piotrjuniorwawrzyniak@gmail.com](mailto:piotrjuniorwawrzyniak@gmail.com)
