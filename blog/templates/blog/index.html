@@ -1,36 +1,54 @@
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!--    <title>WEB MONITOR</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <h1>Monitored Pages</h1>-->
-<!--    <ul>-->
-<!--        {% for site in sites %}-->
-<!--            <li>{{ site.url }} - Check every {{ site.check_interval }} minutes</li>-->
-<!--        {% endfor %}-->
-<!--    </ul>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>WEB MONITOR</title>
+    <style>
+        /* CSS styles for layout */
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .form-container label {
+            margin-right: 10px; /* odstęp między etykietami a polami */
+            white-space: nowrap; /* zapobiega łamaniu wierszy */
+        }
+        .form-container label:first-child {
+            flex: 0 0 auto; /* ustala szerokość etykiety na podstawie jej zawartości */
+            width: auto; /* szerokość dostosowana do zawartości */
+            margin-right: 10px; /* dodatkowy odstęp między etykietą a pierwszym polem */
+        }
+        .form-container input[type="text"],
+        .form-container input[type="url"],
+        .form-container input[type="number"],
+        .form-container select {
+            flex: 1; /* reszta przestrzeni dostępna dla pól formularza */
+            max-width: 300px; /* maksymalna szerokość pola */
+            margin-right: 10px; /* odstęp między polami */
+        }
+        .form-container button {
+            margin-left: auto; /* przycisk 'Dodaj stronę' na końcu */
+        }
+    </style>
 </head>
 <body>
     <h1>Monitorowane strony</h1>
-    <form method="post">
+    <form method="post" class="form-container">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Site</button>
+        <label>Adres strony:</label>
+        {{ form.url }}
+        <label>Częstotliwość monitorowania:</label>
+        {{ form.check_interval }}
+        <label>Wyszukiwana fraza:</label>
+        {{ form.keyword }}
+        <button type="submit">Dodaj stronę</button>
     </form>
     <ul>
         {% for site in sites %}
         <li>
-            <a href="{% url 'site_detail' site.id %}">{{ site.url }}</a>
-            (Check every {{ site.check_interval }} minutes)
+            <a href="#">{{ site.url }}</a>
+            (Sprawdzanie co {{ site.check_interval }} minut)
         </li>
         {% endfor %}
     </ul>
