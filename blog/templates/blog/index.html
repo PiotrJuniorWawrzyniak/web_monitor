@@ -55,7 +55,7 @@
         {% for site in sites %}
         <li>
             <a href="#">{{ site.url }}</a>
-            (Sprawdzanie co {{ site.check_interval }} minut)
+            (Sprawdzanie co {{ site.check_interval }} minut, wyszukiwana fraza: {{ site.keyword }})
         </li>
         {% endfor %}
     </ul>
