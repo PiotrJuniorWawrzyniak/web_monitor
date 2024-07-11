@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>EDYCJA STRONY </title>
+</head>
+<body>
+    <h1>Edycja strony</h1>
+    <p>Adres strony: {{ site.url }}</p>
+    <p>Częstotliwość monitorowania: {{ site.check_interval }}</p>
+    <p>Wyszukiwana fraza: {{ site.keyword }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zapisz zmiany</button>
+    </form>
+
+    <form action="{% url 'site_delete' site.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Usuń stronę</button>
+    </form>
+</body>
+</html>

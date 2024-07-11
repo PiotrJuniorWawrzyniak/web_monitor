@@ -14,6 +14,6 @@ class MonitoredSiteForm(forms.ModelForm):
 
     def clean_url(self):
         url = self.cleaned_data.get('url')
-        if MonitoredSite.objects.filter(url=url).exists():
+        if MonitoredSite.objects.filter(url=url).exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError("Ta strona jest już monitorowana.")
         return url

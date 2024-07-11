@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Potwierdzenie usunięcia strony</title>
+</head>
+<body>
+    <h1>Czy na pewno chcesz usunąć stronę?</h1>
+    <p>Adres strony: {{ site.url }}</p>
+    <form action="{% url 'site_delete' site.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Tak, usuń</button>
+        <a href="{% url 'index' %}">Anuluj</a>
+    </form>
+</body>
+</html>

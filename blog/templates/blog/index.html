@@ -54,10 +54,12 @@
     <ul>
         {% for site in sites %}
         <li>
-            <a href="#">{{ site.url }}</a>
-            (Sprawdzanie co {{ site.check_interval }} minut, wyszukiwana fraza: {{ site.keyword }})
+            <a href="{% url 'site_detail' site.id %}">
+                {{ site.url }} (Sprawdzanie co {{ site.check_interval }} minut, fraza: {{ site.keyword }})
+            </a>
         </li>
         {% endfor %}
     </ul>
+
 </body>
 </html>
