@@ -30,6 +30,10 @@
         .form-container button {
             margin-left: auto; /* przycisk 'Dodaj stronę' na końcu */
         }
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +47,9 @@
         <label>Wyszukiwana fraza:</label>
         {{ form.keyword }}
         <button type="submit">Dodaj stronę</button>
+        {% if form.errors.url %}
+            <p class="error-message">{{ form.errors.url }}</p>
+        {% endif %}
     </form>
     <ul>
         {% for site in sites %}
