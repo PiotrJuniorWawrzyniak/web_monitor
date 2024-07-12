@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>EDYCJA STRONY </title>
+    <title>EDYCJA STRONY</title>
 </head>
 <body>
     <h1>Edycja strony</h1>
@@ -16,7 +16,7 @@
         <button type="submit">Zapisz zmiany</button>
     </form>
 
-    <form action="{% url 'site_delete' site.id %}" method="post">
+    <form action="{% url 'site_delete' site.id %}" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tę stronę?');">
         {% csrf_token %}
         <button type="submit">Usuń stronę</button>
     </form>
