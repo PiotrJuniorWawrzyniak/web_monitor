@@ -61,5 +61,10 @@
         {% endfor %}
     </ul>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector("input[name='check_interval']").setAttribute("min", "1");
+        });
+    </script>
 </body>
 </html>
