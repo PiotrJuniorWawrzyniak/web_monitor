@@ -1,5 +1,5 @@
 from pathlib import Path
-from celery.schedules import crontab  # Import crontab for Celery beat schedule
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -110,18 +110,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
-
-CELERY_BEAT_SCHEDULE = {
-    'check-site-every-10-seconds': {
-        'task': 'blog.tasks.check_site',
-        'schedule': 10.0,  # every 10 seconds
-    },
-    # Example of a crontab schedule
-    # 'check-site-every-day': {
-    #     'task': 'blog.tasks.check_site',
-    #     'schedule': crontab(hour=7, minute=30),
-    # },
-}
+# Celery Beat settings
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

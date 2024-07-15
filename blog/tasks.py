@@ -4,11 +4,8 @@ from .models import MonitoredSite
 
 
 @shared_task
-def check_site(site_id=None):
-    if site_id:
-        sites = MonitoredSite.objects.filter(id=site_id)
-    else:
-        sites = MonitoredSite.objects.all()
+def check_sites():
+    sites = MonitoredSite.objects.all()
 
     for site in sites:
         try:
@@ -21,12 +18,12 @@ def check_site(site_id=None):
                 site.save()
                 # Wysyłanie powiadomienia o zmianie (np. email)
 
-            if site.phrase in response.text and (site.last_phrase_status is None or not site.last_phrase_status):
+            if site.keyword in response.text and (site.last_phrase_status is None or not site.last_phrase_status):
                 # Fraza została znaleziona
                 site.last_phrase_status = True
                 site.save()
                 # Wysyłanie powiadomienia o znalezieniu frazy (np. email)
-            elif site.phrase not in response.text and (site.last_phrase_status is None or site.last_phrase_status):
+            elif site.keyword not in response.text and (site.last_phrase_status is None or site.last_phrase_status):
                 # Fraza została usunięta
                 site.last_phrase_status = False
                 site.save()
