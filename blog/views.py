@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import MonitoredSite
+from .models import MonitoredSite, MonitoringResult
 from .forms import MonitoredSiteForm
 
 
@@ -13,7 +13,8 @@ def index(request):
         form = MonitoredSiteForm()
 
     sites = MonitoredSite.objects.all()
-    return render(request, 'blog/index.html', {'form': form, 'sites': sites})
+    results = {site.pk: MonitoringResult.objects.filter(site=site).order_by('-timestamp').first() for site in sites}
+    return render(request, 'blog/index.html', {'form': form, 'sites': sites, 'results': results})
 
 
 def site_detail(request, pk):

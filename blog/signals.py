@@ -5,8 +5,5 @@ from .tasks import check_sites
 
 
 @receiver(post_save, sender=MonitoredSite)
-def monitor_site(sender, instance, created, **kwargs):
-    if created:
-        check_sites.delay()
-    else:
-        check_sites.delay()
+def monitor_site(sender, instance, **kwargs):
+    check_sites.delay(instance.id)
