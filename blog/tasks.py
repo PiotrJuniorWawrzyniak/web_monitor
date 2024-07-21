@@ -1,33 +1,46 @@
-from celery import shared_task
 import requests
+from bs4 import BeautifulSoup
+from django.core.mail import send_mail
+from celery import shared_task
 from .models import MonitoredSite, MonitoringResult
 
 
 @shared_task
 def check_sites(site_id):
-    try:
-        site = MonitoredSite.objects.get(id=site_id)
-        response = requests.get(site.url)
-        response.raise_for_status()
+    site = MonitoredSite.objects.get(id=site_id)
+    response = requests.get(site.url)
+    content = response.text
 
-        result = "Strona się nie zmieniła"
-        if response.text != site.last_content:
-            result = "Strona się zmieniła"
-            site.last_content = response.text
+    # Sprawdź, czy zawartość strony się zmieniła
+    if site.last_content != content:
+        site.last_content = content
+        site.save()
+
+        # Dodaj wpis w MonitoringResult
+        MonitoringResult.objects.create(site=site, result='Content changed')
+
+        # Sprawdź, czy fraza jest obecna w zawartości strony
+        soup = BeautifulSoup(content, 'html.parser')
+        phrase_status = site.keyword in soup.text
+
+        # Jeśli status frazy się zmienił, zaktualizuj go i wyślij powiadomienie
+        if site.last_phrase_status != phrase_status:
+            site.last_phrase_status = phrase_status
             site.save()
 
-        if site.keyword in response.text and (site.last_phrase_status is None or not site.last_phrase_status):
-            result = "Fraza została znaleziona"
-            site.last_phrase_status = True
-            site.save()
-        elif site.keyword not in response.text and (site.last_phrase_status is None or site.last_phrase_status):
-            result = "Fraza została usunięta"
-            site.last_phrase_status = False
-            site.save()
+            if phrase_status:
+                result = f"The phrase '{site.keyword}' was found on the site."
+            else:
+                result = f"The phrase '{site.keyword}' was not found on the site."
 
-        MonitoringResult.objects.create(site=site, result=result)
+            # Dodaj wpis w MonitoringResult
+            MonitoringResult.objects.create(site=site, result=result)
 
-    except requests.RequestException as e:
-        print(f"Error checking site {site.url}: {e}")
-    except MonitoredSite.DoesNotExist:
-        print(f"Site with id {site_id} does not exist")
+            # Wyślij powiadomienie e-mailem (opcjonalnie)
+            send_mail(
+                'Monitoring Alert',
+                result,
+                'from@example.com',
+                ['to@example.com'],
+                fail_silently=False,
+            )

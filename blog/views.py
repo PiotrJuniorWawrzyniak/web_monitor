@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import MonitoredSite, MonitoringResult
 from .forms import MonitoredSiteForm
 
@@ -13,8 +13,8 @@ def index(request):
         form = MonitoredSiteForm()
 
     sites = MonitoredSite.objects.all()
-    results = {site.pk: MonitoringResult.objects.filter(site=site).order_by('-timestamp').first() for site in sites}
-    return render(request, 'blog/index.html', {'form': form, 'sites': sites, 'results': results})
+    monitoring_results = MonitoringResult.objects.order_by('-timestamp')[:10]  # Pobierz ostatnie 10 wyników
+    return render(request, 'blog/index.html', {'form': form, 'sites': sites, 'monitoring_results': monitoring_results})
 
 
 def site_detail(request, pk):
@@ -26,8 +26,7 @@ def site_detail(request, pk):
             return redirect('index')
     else:
         form = MonitoredSiteForm(instance=site)
-
-    return render(request, 'blog/site_detail.html', {'form': form, 'site': site})
+    return render(request, 'blog/site_detail.html', {'site': site, 'form': form})
 
 
 def site_delete(request, pk):
@@ -35,4 +34,4 @@ def site_delete(request, pk):
     if request.method == 'POST':
         site.delete()
         return redirect('index')
-    return render(request, 'blog/site_confirm_delete.html', {'site': site})
+    return render(request, 'blog/site_detail.html', {'site': site})

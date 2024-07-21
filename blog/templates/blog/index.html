@@ -34,6 +34,11 @@
             color: red;
             margin-top: 5px;
         }
+        .result {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +64,7 @@
             </a>
             <div class="site-info">
                 {% if site.last_content %}
-                    <p>Ostatni zawartość: {{ site.last_content }}</p>
+                    <p>Ostatnia zawartość: {{ site.last_content }}</p>
                 {% endif %}
                 {% if site.last_phrase_status is not None %}
                     <p>Ostatni status frazy: {% if site.last_phrase_status %}Znaleziono{% else %}Nie znaleziono{% endif %}</p>
@@ -70,6 +75,20 @@
             <li>Brak monitorowanych stron.</li>
         {% endfor %}
     </ul>
+
+    <h2>Wyniki monitorowania</h2>
+    <div class="result">
+        <h3>Ostatnie zmiany</h3>
+        <ul>
+            {% for result in monitoring_results %}
+                <li>
+                    {{ result.site.url }} - {{ result.result }} ({{ result.timestamp }})
+                </li>
+            {% empty %}
+                <li>Brak wyników monitorowania.</li>
+            {% endfor %}
+        </ul>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
