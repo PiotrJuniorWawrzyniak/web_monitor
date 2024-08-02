@@ -26,3 +26,6 @@ celerybeat.pid
 
 # VS Code
 .vscode/
+
+# Debugging
+debug.log

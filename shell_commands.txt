@@ -1,0 +1,11 @@
+# Uruchomienie funkcji check_sites dla danego ID strony
+from blog.tasks import check_sites
+check_sites(61)
+
+# Przykład sprawdzenia zawartości strony
+import requests
+from blog.models import MonitoredSite
+site = MonitoredSite.objects.get(id=61)
+response = requests.get(site.url)
+content = response.text
+'fraza' in content

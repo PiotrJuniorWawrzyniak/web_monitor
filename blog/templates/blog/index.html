@@ -63,9 +63,6 @@
                 {{ site.url }} (Sprawdzanie co {{ site.check_interval }} minut, fraza: {{ site.keyword }})
             </a>
             <div class="site-info">
-                {% if site.last_content %}
-                    <p>Ostatnia zawartość: {{ site.last_content }}</p>
-                {% endif %}
                 {% if site.last_phrase_status is not None %}
                     <p>Ostatni status frazy: {% if site.last_phrase_status %}Znaleziono{% else %}Nie znaleziono{% endif %}</p>
                 {% endif %}

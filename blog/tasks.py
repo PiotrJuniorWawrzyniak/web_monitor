@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from django.core.mail import send_mail
 from celery import shared_task
 from .models import MonitoredSite, MonitoringResult
 
@@ -23,7 +22,7 @@ def check_sites(site_id):
         soup = BeautifulSoup(content, 'html.parser')
         phrase_status = site.keyword in soup.text
 
-        # Jeśli status frazy się zmienił, zaktualizuj go i wyślij powiadomienie
+        # Jeśli status frazy się zmienił, zaktualizuj go
         if site.last_phrase_status != phrase_status:
             site.last_phrase_status = phrase_status
             site.save()
@@ -35,12 +34,3 @@ def check_sites(site_id):
 
             # Dodaj wpis w MonitoringResult
             MonitoringResult.objects.create(site=site, result=result)
-
-            # Wyślij powiadomienie e-mailem (opcjonalnie)
-            send_mail(
-                'Monitoring Alert',
-                result,
-                'from@example.com',
-                ['to@example.com'],
-                fail_silently=False,
-            )
