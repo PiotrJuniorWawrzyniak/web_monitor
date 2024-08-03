@@ -23,10 +23,15 @@ def site_detail(request, pk):
         form = MonitoredSiteForm(request.POST, instance=site)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('index')  # Przekierowanie do strony głównej po zapisaniu zmian
     else:
         form = MonitoredSiteForm(instance=site)
-    return render(request, 'blog/site_detail.html', {'site': site, 'form': form})
+
+    # Pobierz wyniki monitorowania dla konkretnej strony
+    monitoring_results = MonitoringResult.objects.filter(site=site).order_by('-timestamp')
+
+    return render(request, 'blog/site_detail.html',
+                  {'site': site, 'form': form, 'monitoring_results': monitoring_results})
 
 
 def site_delete(request, pk):

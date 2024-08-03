@@ -55,11 +55,16 @@ This project is built using Django and Celery Beat.
     ```
 
 8. Configure Celery:
-    - Ensure Redis or is running.
-    - Start the Celery worker:
+    - Ensure Redis is running.
+      - Start the Celery worker STANDARD (This command starts the standard Celery worker. It is recommended for production environments or when tasks can be executed in parallel):
+          ```sh
+          celery -A web_monitor worker --loglevel=info
+          ``` 
+      - Start the Celery worker WITH A SINGLE-THREAD (This command starts the Celery worker in solo mode, meaning all tasks are executed sequentially, one after the other. This can be useful in development environments or for debugging purposes, where you want to see complete logs from each task synchronously):
         ```sh
-        celery -A web_monitor worker --loglevel=info
-        ```
+        celery -A web_monitor worker --loglevel=info --pool=solo
+
+        ``` 
     - Start the Celery Beat scheduler:
         ```sh
         celery -A web_monitor beat --loglevel=info

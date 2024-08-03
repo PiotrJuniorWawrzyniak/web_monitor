@@ -73,20 +73,6 @@
         {% endfor %}
     </ul>
 
-    <h2>Wyniki monitorowania</h2>
-    <div class="result">
-        <h3>Ostatnie zmiany</h3>
-        <ul>
-            {% for result in monitoring_results %}
-                <li>
-                    {{ result.site.url }} - {{ result.result }} ({{ result.timestamp }})
-                </li>
-            {% empty %}
-                <li>Brak wyników monitorowania.</li>
-            {% endfor %}
-        </ul>
-    </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelector("input[name='check_interval']").setAttribute("min", "1");
