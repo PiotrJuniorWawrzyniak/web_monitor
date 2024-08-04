@@ -9,8 +9,15 @@
             flex-direction: column;
             align-items: flex-start;
         }
-        .delete-button-container {
-            margin-top: 50px; /* Większy odstęp między formularzami */
+        .button-container {
+            margin-top: 20px; /* Większy odstęp między formularzami */
+            display: flex;
+            flex-direction: column;
+        }
+        .button-container button,
+        .button-container a {
+            margin-bottom: 10px; /* Odstęp między przyciskami */
+            width: 150px; /* Stała szerokość przycisków */
         }
         .result {
             margin-top: 20px;
@@ -29,11 +36,16 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Zapisz zmiany</button>
+            <div class="button-container">
+                <button type="submit">Zapisz zmiany</button>
+            </div>
         </form>
 
-        <div class="delete-button-container">
-            <form action="{% url 'site_delete' site.id %}" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tę stronę?');">
+        <div class="button-container">
+            <a href="{% url 'index' %}">
+                <button type="button">Powrót</button>
+            </a>
+            <form action="{% url 'site_delete' site.id %}" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tę stronę?');" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit">Usuń stronę</button>
             </form>
