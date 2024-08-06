@@ -7,18 +7,28 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MonitoredSite',
+            name="MonitoredSite",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('url', models.URLField()),
-                ('check_interval', models.IntegerField()),
-                ('keyword', models.CharField(default='default_keyword', max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("url", models.URLField()),
+                ("check_interval", models.IntegerField()),
+                (
+                    "keyword",
+                    models.CharField(default="default_keyword", max_length=100),
+                ),
             ],
         ),
     ]

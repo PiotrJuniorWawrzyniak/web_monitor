@@ -4,4 +4,4 @@ from .models import MonitoredSite
 
 @admin.register(MonitoredSite)
 class MonitoredSiteAdmin(admin.ModelAdmin):
-    list_display = ('url', 'check_interval', 'keyword')
+    list_display = ("url", "check_interval", "keyword")

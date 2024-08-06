@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0004_alter_monitoredsite_url'),
+        ("blog", "0004_alter_monitoredsite_url"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='monitoredsite',
-            name='check_interval',
+            model_name="monitoredsite",
+            name="check_interval",
             field=models.PositiveIntegerField(),
         ),
     ]

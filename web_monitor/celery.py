@@ -4,12 +4,12 @@ from celery import Celery
 from django.conf import settings
 from celery.schedules import crontab
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web_monitor.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web_monitor.settings")
 
-app = Celery('web_monitor')
+app = Celery("web_monitor")
 
 # Użycie ustawień Django w Celery
-app.config_from_object('django.conf:settings', namespace='CELERY')
+app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Automatyczne odkrywanie tasków we wszystkich aplikacjach Django
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
@@ -25,5 +25,5 @@ def setup_periodic_tasks(sender, **kwargs):
         sender.add_periodic_task(
             site.check_interval * 60.0,  # Interwał w sekundach
             check_sites.s(site.id),
-            name=f'check_site_{site.id}'
+            name=f"check_site_{site.id}",
         )

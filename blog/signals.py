@@ -13,8 +13,7 @@ def monitor_site(sender, instance, **kwargs):
 
     # Utwórz lub zaktualizuj harmonogram
     schedule, created = IntervalSchedule.objects.get_or_create(
-        every=interval_in_seconds,
-        period=IntervalSchedule.SECONDS
+        every=interval_in_seconds, period=IntervalSchedule.SECONDS
     )
 
     # Usuń stare zadanie, jeśli istnieje
@@ -27,8 +26,8 @@ def monitor_site(sender, instance, **kwargs):
     PeriodicTask.objects.create(
         interval=schedule,
         name=task_name,
-        task='blog.tasks.check_sites',
-        args=json.dumps([instance.id])
+        task="blog.tasks.check_sites",
+        args=json.dumps([instance.id]),
     )
 
     check_sites.delay(instance.id)

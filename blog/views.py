@@ -4,39 +4,52 @@ from .forms import MonitoredSiteForm
 
 
 def index(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = MonitoredSiteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect("index")
     else:
         form = MonitoredSiteForm()
 
     sites = MonitoredSite.objects.all()
-    monitoring_results = MonitoringResult.objects.order_by('-timestamp')[:10]  # Pobierz ostatnie 10 wyników
-    return render(request, 'blog/index.html', {'form': form, 'sites': sites, 'monitoring_results': monitoring_results})
+    monitoring_results = MonitoringResult.objects.order_by("-timestamp")[
+        :10
+    ]  # Pobierz ostatnie 10 wyników
+    return render(
+        request,
+        "blog/index.html",
+        {"form": form, "sites": sites, "monitoring_results": monitoring_results},
+    )
 
 
 def site_detail(request, pk):
     site = get_object_or_404(MonitoredSite, pk=pk)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = MonitoredSiteForm(request.POST, instance=site)
         if form.is_valid():
             form.save()
-            return redirect('index')  # Przekierowanie do strony głównej po zapisaniu zmian
+            return redirect(
+                "index"
+            )  # Przekierowanie do strony głównej po zapisaniu zmian
     else:
         form = MonitoredSiteForm(instance=site)
 
     # Pobierz wyniki monitorowania dla konkretnej strony
-    monitoring_results = MonitoringResult.objects.filter(site=site).order_by('-timestamp')
+    monitoring_results = MonitoringResult.objects.filter(site=site).order_by(
+        "-timestamp"
+    )
 
-    return render(request, 'blog/site_detail.html',
-                  {'site': site, 'form': form, 'monitoring_results': monitoring_results})
+    return render(
+        request,
+        "blog/site_detail.html",
+        {"site": site, "form": form, "monitoring_results": monitoring_results},
+    )
 
 
 def site_delete(request, pk):
     site = get_object_or_404(MonitoredSite, pk=pk)
-    if request.method == 'POST':
+    if request.method == "POST":
         site.delete()
-        return redirect('index')
-    return render(request, 'blog/site_detail.html', {'site': site})
+        return redirect("index")
+    return render(request, "blog/site_detail.html", {"site": site})

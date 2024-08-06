@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0005_alter_monitoredsite_check_interval'),
+        ("blog", "0005_alter_monitoredsite_check_interval"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='monitoredsite',
-            name='check_interval',
-            field=models.PositiveSmallIntegerField(validators=[django.core.validators.MinValueValidator(1)]),
+            model_name="monitoredsite",
+            name="check_interval",
+            field=models.PositiveSmallIntegerField(
+                validators=[django.core.validators.MinValueValidator(1)]
+            ),
         ),
     ]

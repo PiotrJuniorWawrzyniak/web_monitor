@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0006_alter_monitoredsite_check_interval'),
+        ("blog", "0006_alter_monitoredsite_check_interval"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='monitoredsite',
-            name='last_content',
+            model_name="monitoredsite",
+            name="last_content",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='monitoredsite',
-            name='last_phrase_status',
+            model_name="monitoredsite",
+            name="last_phrase_status",
             field=models.BooleanField(blank=True, default=None, null=True),
         ),
     ]

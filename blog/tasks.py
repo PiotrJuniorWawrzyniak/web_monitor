@@ -20,10 +20,10 @@ def check_sites(site_id):
         site.save()
 
         # Dodaj wpis w MonitoringResult
-        MonitoringResult.objects.create(site=site, result='Treść zmieniona')
+        MonitoringResult.objects.create(site=site, result="Treść zmieniona")
 
     # Sprawdź, czy fraza jest obecna w zawartości strony
-    soup = BeautifulSoup(content, 'html.parser')
+    soup = BeautifulSoup(content, "html.parser")
     phrase_status = site.keyword in soup.text
 
     # Jeśli status frazy się zmienił, zaktualizuj go
