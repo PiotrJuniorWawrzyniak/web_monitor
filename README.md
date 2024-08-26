@@ -8,13 +8,11 @@ An application for monitoring changes on selected websites.
 - **Delete websites:** Remove selected monitored websites.
 - **Track changes:** The application checks selected websites at specified intervals and records changes.
 
-This project is built using Django and Celery Beat.
+This project is built using Django, Celery, and Docker.
 
 ## Requirements
-- Python 3.x
-- Django
-- Celery
-- Redis (for Celery broker)
+- Docker
+- Docker Compose
 
 ## Installation
 1. Clone the repository:
@@ -23,52 +21,31 @@ This project is built using Django and Celery Beat.
     cd web-monitor
     ```
 
-2. Create and activate a virtual environment:
+2. Create a `.env` file in the project root directory and set the environment variables:
     ```sh
-    python -m venv venv
-    source venv/bin/activate   # On Windows use `venv\Scripts\activate`
+    DEBUG=1
+    SECRET_KEY=your_secret_key_here
+    CELERY_BROKER_URL=redis://redis:6379/0
+    CELERY_RESULT_BACKEND=redis://redis:6379/0
     ```
 
-3. Install the required packages:
+3. Build and start the Docker containers:
     ```sh
-    pip install -r requirements.txt
+    docker-compose up --build
     ```
 
-4. Configure the database:
+    This command will:
+    - Build the Docker images for the Django app and Celery.
+    - Start the Django development server, Redis, Celery worker, and Celery Beat scheduler.
+
+4. Access the application:
+    - Open your browser and navigate to `http://localhost:8000` to access the main page.
+    - To access the Django admin, navigate to `http://localhost:8000/admin`.
+
+5. Create a superuser to access the Django admin:
     ```sh
-    python manage.py migrate
+    docker-compose exec web python manage.py createsuperuser
     ```
-
-5. Create a superuser:
-    ```sh
-    python manage.py createsuperuser
-    ```
-
-6. Run the development server:
-    ```sh
-    python manage.py runserver
-    ```
-
-7. Start the Redis server:
-    ```sh
-    redis-server
-    ```
-
-8. Configure Celery:
-    - Ensure Redis is running.
-      - Start the Celery worker STANDARD (This command starts the standard Celery worker. It is recommended for production environments or when tasks can be executed in parallel):
-          ```sh
-          celery -A web_monitor worker --loglevel=info
-          ``` 
-      - Start the Celery worker WITH A SINGLE-THREAD (This command starts the Celery worker in solo mode, meaning all tasks are executed sequentially, one after the other. This can be useful in development environments or for debugging purposes, where you want to see complete logs from each task synchronously):
-        ```sh
-        celery -A web_monitor worker --loglevel=info --pool=solo
-
-        ``` 
-    - Start the Celery Beat scheduler:
-        ```sh
-        celery -A web_monitor beat --loglevel=info
-        ```
 
 ## Usage
 1. **Add a website to monitor:**
@@ -83,6 +60,12 @@ This project is built using Django and Celery Beat.
 
 4. **Track changes:**
    - The application automatically checks the websites at specified intervals. Changes are recorded and displayed in the application.
+
+## Stopping the Application
+To stop the Docker containers, use:
+```sh
+docker-compose down
+```
 
 ## Author
 - Piotr Wawrzyniak - [piotrjuniorwawrzyniak@gmail.com](mailto:piotrjuniorwawrzyniak@gmail.com)
