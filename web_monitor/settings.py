@@ -153,8 +153,12 @@ WSGI_APPLICATION = "web_monitor.wsgi.application"
 # Database
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv('POSTGRES_DB', 'web_monitor_db'),
+        "USER": os.getenv('POSTGRES_USER', 'web_monitor_user'),
+        "PASSWORD": os.getenv('POSTGRES_PASSWORD', 'your_secure_password'),
+        "HOST": os.getenv('POSTGRES_HOST', 'db'),
+        "PORT": os.getenv('POSTGRES_PORT', '5432'),
     }
 }
 

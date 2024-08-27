@@ -27,9 +27,24 @@ This project is built using Django, Celery, and Docker.
     SECRET_KEY=your_secret_key_here
     CELERY_BROKER_URL=redis://redis:6379/0
     CELERY_RESULT_BACKEND=redis://redis:6379/0
+    POSTGRES_DB=web_monitor_db
+    POSTGRES_USER=web_monitor_user
+    POSTGRES_PASSWORD=your_secure_password
+    POSTGRES_HOST=db
+    POSTGRES_PORT=5432
     ```
 
-3. Build and start the Docker containers:
+3. Install the required Python packages:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+4. Apply database migrations:
+    ```sh
+    docker-compose exec web python manage.py migrate
+    ```
+
+5. Build and start the Docker containers:
     ```sh
     docker-compose up --build
     ```
@@ -38,11 +53,11 @@ This project is built using Django, Celery, and Docker.
     - Build the Docker images for the Django app and Celery.
     - Start the Django development server, Redis, Celery worker, and Celery Beat scheduler.
 
-4. Access the application:
+6. Access the application:
     - Open your browser and navigate to `http://localhost:8000` to access the main page.
     - To access the Django admin, navigate to `http://localhost:8000/admin`.
 
-5. Create a superuser to access the Django admin:
+7. Create a superuser to access the Django admin:
     ```sh
     docker-compose exec web python manage.py createsuperuser
     ```
