@@ -8,7 +8,7 @@ An application for monitoring changes on selected websites.
 - **Delete websites:** Remove selected monitored websites.
 - **Track changes:** The application checks selected websites at specified intervals and records changes.
 
-This project is built using Django, Celery, and Docker.
+This project is built using Django, Celery (worker, beat), Redis, and Docker for a complete web monitoring solution. Django handles the web application framework, Celery manages asynchronous tasks and periodic tasks, Redis is used as a message broker and result backend for Celery, and Docker provides containerization for the application. 
 
 ## Requirements
 - Docker (version 20.10 or higher)
