@@ -11,8 +11,9 @@ An application for monitoring changes on selected websites.
 This project is built using Django, Celery, and Docker.
 
 ## Requirements
-- Docker
-- Docker Compose
+- Docker (version 20.10 or higher)
+- Docker Compose (version 1.29 or higher)
+- Python 3.8 or higher
 
 ## Installation
 1. Clone the repository:
@@ -39,12 +40,7 @@ This project is built using Django, Celery, and Docker.
     pip install -r requirements.txt
     ```
 
-4. Apply database migrations:
-    ```sh
-    docker-compose exec web python manage.py migrate
-    ```
-
-5. Build and start the Docker containers:
+4. Build and start the Docker containers:
     ```sh
     docker-compose up --build
     ```
@@ -53,11 +49,22 @@ This project is built using Django, Celery, and Docker.
     - Build the Docker images for the Django app and Celery.
     - Start the Django development server, Redis, Celery worker, and Celery Beat scheduler.
 
-6. Access the application:
+
+5. Restart Celery beat server:
+    ```sh
+    docker-compose restart celery-beat
+    ```
+
+6. Apply database migrations:
+    ```sh
+    docker-compose exec web python manage.py migrate
+    ```
+
+7. Access the application:
     - Open your browser and navigate to `http://localhost:8000` to access the main page.
     - To access the Django admin, navigate to `http://localhost:8000/admin`.
 
-7. Create a superuser to access the Django admin:
+8. Create a superuser to access the Django admin:
     ```sh
     docker-compose exec web python manage.py createsuperuser
     ```
