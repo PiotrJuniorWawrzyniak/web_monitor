@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import MonitoredSite, MonitoringResult
 from .forms import MonitoredSiteForm
 
+def react_app(request):
+    return render(request, 'blog/react_app.html')
 
 def index(request):
     if request.method == "POST":
