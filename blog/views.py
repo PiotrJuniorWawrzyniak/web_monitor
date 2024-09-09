@@ -1,9 +1,24 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import MonitoredSite, MonitoringResult
 from .forms import MonitoredSiteForm
+from django.http import JsonResponse
 
+# Widok do renderowania strony Reacta
 def react_app(request):
     return render(request, 'blog/react_app.html')
+
+# Widok do obsługi formularza
+def submit_form(request):
+    if request.method == 'POST':
+        data = request.POST
+        # Przykład walidacji i odpowiedzi
+        if data.get('website_url') and data.get('frequency'):
+            # Zwracamy sukces
+            return JsonResponse({'message': 'Form submitted successfully!'}, status=200)
+        else:
+            # Zwracamy błąd
+            return JsonResponse({'error': 'Invalid form data'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def index(request):
     if request.method == "POST":
