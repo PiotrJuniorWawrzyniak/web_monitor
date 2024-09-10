@@ -49,15 +49,14 @@ This project is built using Django, Celery (worker, beat), Redis, and Docker for
     - Build the Docker images for the Django app and Celery.
     - Start the Django development server, Redis, Celery worker, and Celery Beat scheduler.
 
-
-5. Restart Celery beat server:
-    ```sh
-    docker-compose restart celery-beat
-    ```
-
-6. Apply database migrations:
+5. Apply database migrations:
     ```sh
     docker-compose exec web python manage.py migrate
+    ```
+
+6. Restart Celery beat server:
+    ```sh
+    docker-compose restart celery-beat
     ```
 
 7. Access the application:
