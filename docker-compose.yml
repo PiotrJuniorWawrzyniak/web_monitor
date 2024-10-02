@@ -4,6 +4,8 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+      - ./frontend/build:/app/frontend/build  # mapowanie plików frontendowych
+      - ./staticfiles:/app/staticfiles  # mapowanie plików statycznych
     ports:
       - "8000:8000"
     environment:
@@ -18,6 +20,7 @@ services:
     depends_on:
       - redis
       - db
+      - react  # dodajemy zależność od Reacta
 
   redis:
     image: redis:7.0
@@ -48,6 +51,17 @@ services:
       POSTGRES_PASSWORD: your_secure_password
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+
+  react:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
 
 volumes:
   postgres_data:

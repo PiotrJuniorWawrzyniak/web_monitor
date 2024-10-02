@@ -1,114 +1,20 @@
-# from pathlib import Path
-# from celery.schedules import crontab
-#
-# BASE_DIR = Path(__file__).resolve().parent.parent
-#
-# SECRET_KEY = "django-insecure-*dndy(@!ws*4qmrk=niv$enn3#ujsqurmpb6ih1+(d37)hkuch"
-# DEBUG = True
-# ALLOWED_HOSTS = []
-#
-# INSTALLED_APPS = [
-#     "django.contrib.admin",
-#     "django.contrib.auth",
-#     "django.contrib.contenttypes",
-#     "django.contrib.sessions",
-#     "django.contrib.messages",
-#     "django.contrib.staticfiles",
-#     "blog",
-#     "django_celery_beat",
-# ]
-#
-# MIDDLEWARE = [
-#     "django.middleware.security.SecurityMiddleware",
-#     "django.contrib.sessions.middleware.SessionMiddleware",
-#     "django.middleware.common.CommonMiddleware",
-#     "django.middleware.csrf.CsrfViewMiddleware",
-#     "django.contrib.auth.middleware.AuthenticationMiddleware",
-#     "django.contrib.messages.middleware.MessageMiddleware",
-#     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-# ]
-#
-# ROOT_URLCONF = "web_monitor.urls"
-#
-# TEMPLATES = [
-#     {
-#         "BACKEND": "django.template.backends.django.DjangoTemplates",
-#         "DIRS": [BASE_DIR / "templates"],
-#         "APP_DIRS": True,
-#         "OPTIONS": {
-#             "context_processors": [
-#                 "django.template.context_processors.debug",
-#                 "django.template.context_processors.request",
-#                 "django.contrib.auth.context_processors.auth",
-#                 "django.contrib.messages.context_processors.messages",
-#             ],
-#         },
-#     },
-# ]
-#
-# WSGI_APPLICATION = "web_monitor.wsgi.application"
-#
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-#
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-#     },
-#     {
-#         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-#     },
-#     {
-#         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-#     },
-#     {
-#         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-#     },
-# ]
-#
-# LANGUAGE_CODE = "pl-pl"
-# TIME_ZONE = "Europe/Warsaw"
-# USE_I18N = True
-# USE_TZ = True
-#
-# STATIC_URL = "/static/"
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-# ]
-#
-# CELERY_BROKER_URL = "redis://localhost:6379/0"
-# CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
-# CELERY_ACCEPT_CONTENT = ["json"]
-# CELERY_TASK_SERIALIZER = "json"
-# CELERY_RESULT_SERIALIZER = "json"
-# CELERY_TIMEZONE = TIME_ZONE
-#
-# CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
-#
-# DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# DOCKER VERSION BELOW / WITHOUT DOCKER ABOVE
-
 from pathlib import Path
 import os
 from django.core.management.utils import get_random_secret_key
 
+# Ścieżka bazowa projektu
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Secret Key
+# Klucz sekretu
 SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 
-# Debug mode
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+# Tryb debugowania
+DEBUG = True  # Możesz zmienić na os.getenv('DEBUG', 'True') == 'True'
 
-# Allowed hosts
+# Dopuszczone hosty
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
-# Application definition
+# Zainstalowane aplikacje
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -116,10 +22,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog",
+    "blog",  # Twoja aplikacja
     "django_celery_beat",
 ]
 
+# Middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -130,27 +37,33 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Plik główny URL
 ROOT_URLCONF = "web_monitor.urls"
 
+# Szablony
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend/build'),  # Katalog z buildem Reacta
+            os.path.join(BASE_DIR, 'templates'),  # Katalog z szablonami Django
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
 
+# Aplikacja WSGI
 WSGI_APPLICATION = "web_monitor.wsgi.application"
 
-# Database
+# Konfiguracja bazy danych
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -162,7 +75,7 @@ DATABASES = {
     }
 }
 
-# Password validation
+# Walidacja haseł
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -178,20 +91,29 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
+# Międzynarodowe ustawienia
 LANGUAGE_CODE = "pl-pl"
 TIME_ZONE = "Europe/Warsaw"
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Pliki statyczne (CSS, JavaScript, Obrazy)
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/build/static'),
+    os.path.join(BASE_DIR, 'frontend/build'),
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Celery Configuration
+# Konfiguracja wyszukiwaczy plików statycznych
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
+# Konfiguracja Celery
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
 CELERY_ACCEPT_CONTENT = ["json"]
@@ -201,5 +123,5 @@ CELERY_TIMEZONE = TIME_ZONE
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
-# Default primary key field type
+# Domyślny typ klucza głównego
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

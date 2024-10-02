@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import Notification from './Notification'; // Importuj komponent
+import Notification from './Notification';
 
-function FormComponent() {
+function FormComponent({ setNotification }) {
     const [formData, setFormData] = useState({
         url: '',
         frequency: '',
-        phrase: ''
+        keyword: ''
     });
-    const [notification, setNotification] = useState({ message: '', type: '' });
+    const [isDuplicate, setIsDuplicate] = useState(false);
+    const [isValidUrl, setIsValidUrl] = useState(true);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -15,20 +16,55 @@ function FormComponent() {
             ...formData,
             [name]: value
         });
+
+        if (name === 'url') {
+            validateUrl(value);
+        }
+    };
+
+    const validateUrl = (url) => {
+        const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+        setIsValidUrl(urlPattern.test(url));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Sprawdzenie duplikacji
+        fetch(`/api/check-duplicate/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: formData.url })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.duplicate) {
+                setNotification({ message: 'Podana strona jest już monitorowana.', type: 'error' });
+                setIsDuplicate(true);
+            } else {
+                submitForm();
+            }
+        })
+        .catch(() => {
+            setNotification({ message: 'Błąd sieci. Spróbuj ponownie.', type: 'error' });
+        });
+    };
+
+    const submitForm = () => {
+        console.log("Wysyłane dane:", formData);
+
         fetch('/api/submit-form/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
             },
             body: JSON.stringify(formData)
         }).then(response => {
             if (response.ok) {
                 setNotification({ message: 'Form submitted successfully!', type: 'success' });
+                setFormData({ url: '', frequency: '', keyword: '' });
             } else {
                 return response.json().then(data => {
                     setNotification({ message: data.error || 'Error submitting form.', type: 'error' });
@@ -41,7 +77,6 @@ function FormComponent() {
 
     return (
         <div>
-            <Notification message={notification.message} type={notification.type} />
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Website URL:</label>
@@ -52,6 +87,8 @@ function FormComponent() {
                         onChange={handleChange}
                         required
                     />
+                    {!isValidUrl && <p style={{ color: 'red' }}>Podaj poprawny URL.</p>}
+                    {isDuplicate && <p style={{ color: 'red' }}>Podana strona jest już monitorowana.</p>}
                 </div>
                 <div>
                     <label>Monitoring Frequency (min):</label>
@@ -68,13 +105,13 @@ function FormComponent() {
                     <label>Search Phrase:</label>
                     <input
                         type="text"
-                        name="phrase"
-                        value={formData.phrase}
+                        name="keyword"
+                        value={formData.keyword}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit" disabled={!isValidUrl || isDuplicate}>Submit</button>
             </form>
         </div>
     );
