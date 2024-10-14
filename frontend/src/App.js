@@ -4,7 +4,6 @@ import FormComponent from './FormComponent';
 import Notification from './Notification';
 import SiteList from './SiteList';
 import EditDeleteModal from './EditDeleteModal';
-import LiveUpdateComponent from './LiveUpdateComponent';
 
 function App() {
     const [notification, setNotification] = useState({ message: '', type: '' });
@@ -23,6 +22,10 @@ function App() {
     // Automatyczne odświeżanie listy stron po renderowaniu komponentu
     useEffect(() => {
         fetchSites();  // Pobranie stron po załadowaniu komponentu
+
+        // Dodano automatyczne odświeżanie co 5 sekund
+        const intervalId = setInterval(fetchSites, 5000);
+        return () => clearInterval(intervalId);
     }, []);
 
     // Funkcja do otwierania modala
@@ -39,18 +42,50 @@ function App() {
 
     // Funkcja do zapisywania zmian w formularzu edycji
     const handleSaveChanges = (updatedSite) => {
-        console.log('Zapisano zmiany:', updatedSite);
-        setNotification({ message: 'Changes saved successfully!', type: 'success' });
-        fetchSites();  // Odśwież listę po zapisaniu zmian
-        closeModal();
+        const siteId = selectedSite.id;
+        fetch(`/api/monitored-sites/${siteId}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedSite),
+        })
+        .then(response => {
+            if (response.ok) {
+                setNotification({ message: 'Zmiany zostały zapisane pomyślnie!', type: 'success' });
+                fetchSites();  // Odśwież listę po zapisaniu zmian
+            } else {
+                setNotification({ message: 'Błąd podczas zapisywania zmian.', type: 'error' });
+            }
+            closeModal();
+        })
+        .catch(error => {
+            console.error('Error saving changes:', error);
+            setNotification({ message: 'Błąd sieci. Spróbuj ponownie.', type: 'error' });
+            closeModal();
+        });
     };
 
     // Funkcja do usuwania strony
     const handleDeleteSite = () => {
-        console.log('Strona została usunięta:', selectedSite);
-        setNotification({ message: 'Site deleted successfully!', type: 'success' });
-        fetchSites();  // Odśwież listę po usunięciu strony
-        closeModal();
+        const siteId = selectedSite.id;
+        fetch(`/api/monitored-sites/${siteId}/`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                setNotification({ message: 'Strona została usunięta pomyślnie!', type: 'success' });
+                fetchSites();  // Odśwież listę po usunięciu strony
+            } else {
+                setNotification({ message: 'Błąd podczas usuwania strony.', type: 'error' });
+            }
+            closeModal();
+        })
+        .catch(error => {
+            console.error('Error deleting site:', error);
+            setNotification({ message: 'Błąd sieci. Spróbuj ponownie.', type: 'error' });
+            closeModal();
+        });
     };
 
     return (
@@ -58,7 +93,7 @@ function App() {
             <h1>WEB MONITOR</h1>
 
             <Notification message={notification.message} type={notification.type} />
-            <FormComponent setNotification={setNotification} fetchSites={fetchSites} />  {/* Przekazanie fetchSites */}
+            <FormComponent setNotification={setNotification} refreshSiteList={fetchSites} />  {/* Poprawiono nazwę prop */}
             <SiteList openModal={openModal} sites={sites} />  {/* Przekazanie listy stron do SiteList */}
 
             {/* Modal do edycji/usuwania */}
@@ -69,8 +104,6 @@ function App() {
                 onSave={handleSaveChanges}
                 onDelete={handleDeleteSite}
             />
-
-            <LiveUpdateComponent />
         </div>
     );
 }

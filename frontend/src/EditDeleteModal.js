@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Modal.css';
 
-function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete, refreshSites }) {  // Dodajemy refreshSites jako props
+function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete }) {
     const [formData, setFormData] = useState({
         url: '',
         check_interval: '',
@@ -28,12 +28,10 @@ function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete, refreshSites
 
     const handleSave = () => {
         onSave(formData);
-        refreshSites();  // Odśwież listę po zapisaniu
     };
 
     const handleDelete = () => {
         onDelete();
-        refreshSites();  // Odśwież listę po usunięciu
     };
 
     if (!isOpen || !site) {
@@ -44,7 +42,7 @@ function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete, refreshSites
         <div className="modal">
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
-                <h2>Edit or Delete Monitored Site</h2>
+                <h2>Edytuj lub Usuń Monitorowaną Stronę</h2>
 
                 <form>
                     <div>
@@ -80,8 +78,8 @@ function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete, refreshSites
                     </div>
                 </form>
 
-                <button onClick={handleSave}>Save Changes</button>
-                <button onClick={handleDelete} style={{ color: 'red' }}>Delete Site</button>
+                <button onClick={handleSave}>Zapisz Zmiany</button>
+                <button onClick={handleDelete} style={{ color: 'red' }}>Usuń Stronę</button>
             </div>
         </div>
     );

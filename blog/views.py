@@ -6,6 +6,7 @@ from django.db import IntegrityError
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import json
+from django.views.decorators.http import require_http_methods
 
 
 def index_page(request):
@@ -107,3 +108,25 @@ def check_duplicate(request):
         return JsonResponse({'duplicate': exists}, status=200)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+@require_http_methods(["PUT"])
+def update_monitored_site(request, pk):
+    site = get_object_or_404(MonitoredSite, pk=pk)
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+    form = MonitoredSiteForm(data, instance=site)
+    if form.is_valid():
+        form.save()
+        return JsonResponse({'message': 'Site updated successfully'}, status=200)
+    return JsonResponse({'error': 'Invalid form data'}, status=400)
+
+
+@require_http_methods(["DELETE"])
+def delete_monitored_site(request, pk):
+    site = get_object_or_404(MonitoredSite, pk=pk)
+    site.delete()
+    return JsonResponse({'message': 'Site deleted successfully'}, status=200)

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-function FormComponent({ setNotification, refreshSiteList }) { // Dodano refreshSiteList jako props
+function FormComponent({ setNotification, refreshSiteList }) {
     const [formData, setFormData] = useState({
         url: '',
-        check_interval: '', // Zmieniono 'frequency' na 'check_interval'
+        check_interval: '',
         keyword: ''
     });
     const [isDuplicate, setIsDuplicate] = useState(false);
@@ -52,35 +52,32 @@ function FormComponent({ setNotification, refreshSiteList }) { // Dodano refresh
     };
 
     const submitForm = () => {
-        // Przekonwertuj check_interval na liczbę całkowitą
         const dataToSend = {
             ...formData,
-            check_interval: parseInt(formData.check_interval, 10) // Dodaj konwersję na int
+            check_interval: parseInt(formData.check_interval, 10)
         };
-
-        console.log("Wysyłane dane:", dataToSend);
 
         fetch('/api/submit-form/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend) // Użyj dataToSend
+            body: JSON.stringify(dataToSend)
         }).then(response => {
             if (response.ok) {
-                setNotification({ message: 'Form submitted successfully!', type: 'success' });
+                setNotification({ message: 'Formularz został pomyślnie wysłany!', type: 'success' });
                 setFormData({ url: '', check_interval: '', keyword: '' }); // Resetowanie formularza
 
-                if (refreshSiteList) { // Sprawdzanie i odświeżanie listy
+                if (refreshSiteList) {
                     refreshSiteList();
                 }
             } else {
                 return response.json().then(data => {
-                    setNotification({ message: data.error || 'Error submitting form.', type: 'error' });
+                    setNotification({ message: data.error || 'Błąd podczas wysyłania formularza.', type: 'error' });
                 });
             }
         }).catch(() => {
-            setNotification({ message: 'Network error. Please try again.', type: 'error' });
+            setNotification({ message: 'Błąd sieci. Spróbuj ponownie.', type: 'error' });
         });
     };
 
@@ -100,10 +97,10 @@ function FormComponent({ setNotification, refreshSiteList }) { // Dodano refresh
                     {isDuplicate && <p style={{ color: 'red' }}>Podana strona jest już monitorowana.</p>}
                 </div>
                 <div>
-                    <label>Monitoring Frequency (min):</label> {/* Zmieniono label */}
+                    <label>Monitoring Frequency (min):</label>
                     <input
                         type="number"
-                        name="check_interval" // Zmieniono 'frequency' na 'check_interval'
+                        name="check_interval"
                         value={formData.check_interval}
                         onChange={handleChange}
                         min="1"
