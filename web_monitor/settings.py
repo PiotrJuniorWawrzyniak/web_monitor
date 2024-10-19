@@ -134,13 +134,13 @@ from django.core.management.utils import get_random_secret_key
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Klucz sekretu
-SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
+SECRET_KEY = os.getenv("SECRET_KEY", get_random_secret_key())
 
 # Tryb debugowania
 DEBUG = True  # Możesz zmienić na os.getenv('DEBUG', 'True') == 'True'
 
 # Dopuszczone hosty
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # Zainstalowane aplikacje
 INSTALLED_APPS = [
@@ -173,18 +173,18 @@ ROOT_URLCONF = "web_monitor.urls"
 # Szablony
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'frontend/build'),  # Katalog z buildem Reacta
-            os.path.join(BASE_DIR, 'templates'),  # Katalog z szablonami Django
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            os.path.join(BASE_DIR, "frontend/build"),  # Katalog z buildem Reacta
+            os.path.join(BASE_DIR, "templates"),  # Katalog z szablonami Django
         ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -197,11 +197,11 @@ WSGI_APPLICATION = "web_monitor.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv('POSTGRES_DB', 'web_monitor_db'),
-        "USER": os.getenv('POSTGRES_USER', 'web_monitor_user'),
-        "PASSWORD": os.getenv('POSTGRES_PASSWORD', 'your_secure_password'),
-        "HOST": os.getenv('POSTGRES_HOST', 'db'),
-        "PORT": os.getenv('POSTGRES_PORT', '5432'),
+        "NAME": os.getenv("POSTGRES_DB", "web_monitor_db"),
+        "USER": os.getenv("POSTGRES_USER", "web_monitor_user"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "your_secure_password"),
+        "HOST": os.getenv("POSTGRES_HOST", "db"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
 }
 
@@ -231,21 +231,21 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/build/static'),
-    os.path.join(BASE_DIR, 'frontend/build'),
+    os.path.join(BASE_DIR, "frontend/build/static"),
+    os.path.join(BASE_DIR, "frontend/build"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Konfiguracja wyszukiwaczy plików statycznych
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
 # Konfiguracja Celery
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
@@ -261,12 +261,12 @@ CORS_ALLOWED_ORIGINS = [
 
 # CSRF - zaufane pochodzenia (domeny)
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 # Domyślny typ klucza głównego
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Bezpieczne ustawienia dla CSRF (opcjonalnie, gdy używasz HTTPS)
-CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'False') == 'True'
+CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "False") == "True"
