@@ -9,12 +9,7 @@ import json
 @receiver(post_save, sender=MonitoredSite)
 def monitor_site(sender, instance, **kwargs):
     # Konwersja minut na sekundy
-    interval_in_seconds = instance.check_interval * 60
-
-    # Utwórz lub zaktualizuj harmonogram
-    schedule, created = IntervalSchedule.objects.get_or_create(
-        every=interval_in_seconds, period=IntervalSchedule.SECONDS
-    )
+    interval_in_seconds = max(int(instance.check_interval) * 60, 60)
 
     # Usuń stare zadanie, jeśli istnieje
     task_name = f"check_site_{instance.id}"
@@ -22,7 +17,12 @@ def monitor_site(sender, instance, **kwargs):
     if old_task:
         old_task.delete()
 
-    # Utwórz nowe zadanie
+    # Utwórz lub zaktualizuj harmonogram
+    schedule, created = IntervalSchedule.objects.get_or_create(
+        every=interval_in_seconds, period=IntervalSchedule.SECONDS
+    )
+
+    # Utwórz nowe zadanie cykliczne
     PeriodicTask.objects.create(
         interval=schedule,
         name=task_name,
@@ -30,6 +30,7 @@ def monitor_site(sender, instance, **kwargs):
         args=json.dumps([instance.id]),
     )
 
+    # Sprawdzenie witryny po zapisaniu
     check_sites.delay(instance.id)
 
 

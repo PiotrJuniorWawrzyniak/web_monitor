@@ -42,7 +42,7 @@
         </form>
 
         <div class="button-container">
-            <a href="{% url 'index' %}">
+            <a href="{% url 'index_page' %}">  <!-- Zmiana z 'index' na 'index_page' -->
                 <button type="button">Powrót</button>
             </a>
             <form action="{% url 'site_delete' site.id %}" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tę stronę?');" style="display: inline;">

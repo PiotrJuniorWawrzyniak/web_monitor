@@ -5,7 +5,9 @@ from django.core.validators import MinValueValidator
 class MonitoredSite(models.Model):
     url = models.URLField(unique=True)
     keyword = models.CharField(max_length=100)
-    check_interval = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+    check_interval = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)]
+    )  # Minimalna wartość 1 minuta
     last_content = models.TextField(blank=True, null=True)
     last_phrase_status = models.BooleanField(default=None, null=True, blank=True)
 
