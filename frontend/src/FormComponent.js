@@ -105,7 +105,7 @@ function FormComponent({ setNotification, refreshSiteList }) {
         <div>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Website URL:</label>
+                    <label>Adres strony:</label>
                     <input
                         type="url"
                         name="url"
@@ -117,7 +117,7 @@ function FormComponent({ setNotification, refreshSiteList }) {
                     {isDuplicate && <p style={{ color: 'red' }}>Podana strona jest już monitorowana.</p>}
                 </div>
                 <div>
-                    <label>Monitoring Frequency (min):</label>
+                    <label>Częstotliwość monitorowania (min):</label>
                     <input
                         type="number"
                         name="check_interval"
@@ -128,7 +128,7 @@ function FormComponent({ setNotification, refreshSiteList }) {
                     />
                 </div>
                 <div>
-                    <label>Search Phrase:</label>
+                    <label>Wyszukiwana fraza:</label>
                     <input
                         type="text"
                         name="keyword"
@@ -137,7 +137,7 @@ function FormComponent({ setNotification, refreshSiteList }) {
                         required
                     />
                 </div>
-                <button type="submit" disabled={!isValidUrl || isDuplicate}>Submit</button>
+                <button type="submit" disabled={!isValidUrl || isDuplicate}>Wyślij</button>
             </form>
         </div>
     );

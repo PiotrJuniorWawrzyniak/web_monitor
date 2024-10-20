@@ -3,7 +3,7 @@ import React from 'react';
 function SiteList({ openModal, sites }) {
     return (
         <div>
-            <h2>Monitorowane Strony</h2>
+            <h2>Monitorowane strony</h2>
             <ul>
                 {sites.length > 0 ? (
                     sites.map((site) => (

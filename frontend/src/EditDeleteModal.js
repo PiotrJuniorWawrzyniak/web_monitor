@@ -62,11 +62,11 @@ function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete }) {
         <div className="modal">
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
-                <h2>Edytuj lub Usuń Monitorowaną Stronę</h2>
+                <h2>Edytuj lub usuń monitorowaną stronę</h2>
 
                 <form>
                     <div>
-                        <label>Website URL:</label>
+                        <label>Adres strony:</label>
                         <input
                             type="url"
                             name="url"
@@ -76,7 +76,7 @@ function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete }) {
                         />
                     </div>
                     <div>
-                        <label>Monitoring Frequency (min):</label>
+                        <label>Częstotliwość monitorowania (min):</label>
                         <input
                             type="number"
                             name="check_interval"
@@ -87,7 +87,7 @@ function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete }) {
                         />
                     </div>
                     <div>
-                        <label>Search Phrase:</label>
+                        <label>Wyszukiwana fraza:</label>
                         <input
                             type="text"
                             name="keyword"
@@ -98,8 +98,8 @@ function EditDeleteModal({ site, isOpen, onClose, onSave, onDelete }) {
                     </div>
                 </form>
 
-                <button onClick={handleSave}>Zapisz Zmiany</button>
-                <button onClick={handleDelete} style={{ color: 'red' }}>Usuń Stronę</button>
+                <button onClick={handleSave}>Zapisz zmiany</button>
+                <button onClick={handleDelete} style={{ color: 'red' }}>Usuń stronę</button>
             </div>
         </div>
     );

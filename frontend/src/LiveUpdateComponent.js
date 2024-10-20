@@ -21,7 +21,7 @@ function LiveUpdateComponent() {
 
     return (
         <div>
-            <h2>Monitored Sites</h2>
+            <h2>Monitorowane strony</h2>
             <ul>
                 {sites.map(site => (
                     <li key={site.id}>
